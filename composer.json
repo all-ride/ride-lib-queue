@@ -1,0 +1,21 @@
+{
+    "name": "ride/lib-queue",
+    "description": "Abstraction library for a job queue",
+    "license": "MIT",
+    "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Joris Vandeweerd",
+            "email": "joris@statik.be"
+        }
+    ],
+    "require": {
+        "ride/lib-common": "^1.0.0",
+        "ride/lib-log": ">=0.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "ride\\library\\queue\\": ["src/", "test/src"]
+        }
+    }
+}
