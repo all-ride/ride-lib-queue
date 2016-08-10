@@ -18,7 +18,7 @@ When your job is invoked, you should lookup your data, using the references, in 
 ## QueueManager
 
 The _QueueManager_ interface is to be implemented for the underlying queue system.
-This is the facade to your queue.
+This is the facade to the queue system.
 You can check the status of the system, a queue or a job.
 It's also used to queue jobs and to update their status.
 
@@ -35,19 +35,19 @@ This interface is also to be implemented by the underlying queue system.
 A _QueueJob_ holds the queue it is in.
 When you create a job, you might not know about the available queues or their availability.
 You can use a _QueueDispatcher_ to queue the job.
-This dispatcher's goal is to select the proper queue for the job and perform the queue process.
+This dispatcher's goal is to select the proper queue for the job and perform the queueing process.
 
 There are 2 dispatchers provided by the library.
 
 ### SingleQueueDispatcher
 
-The _SingleQueueDispatcher_ is like the name says, simple.
+The _SingleQueueDispatcher_ is a very simple dispatcher.
 It's used when you have only one static queue.
 
 ### RoundRobinQueueDispatcher
 
 The _RoundRobinQueueDispatcher_ is initialized with a number of queues.
-When this dispatcher queues a job, it will push it to the queue with the least amount of jobs.
+When this dispatcher queues a job, it will push it to the queue with the least amount of jobs pending.
 
 ## QueueWorker
 
