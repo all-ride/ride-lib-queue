@@ -14,7 +14,7 @@ class GenericQueueWorkerTest extends PHPUnit_Framework_TestCase {
         $queue = 'default';
         $sleepTime = -1;
 
-        $this->queueManager = $this->getMock(QueueManager::class);
+        $this->queueManager = $this->getMock('ride\\library\\queue\\QueueManager');
         $this->queueManager->expects($this->any())
                      ->method('popJobFromQueue')
                      ->with($this->equalTo($queue))
@@ -32,13 +32,13 @@ class GenericQueueWorkerTest extends PHPUnit_Framework_TestCase {
             return null;
         }
 
-        $queueJob = $this->getMock(QueueJob::class);
+        $queueJob = $this->getMock('ride\\library\\queue\\job\\QueueJob');
         $queueJob->expects($this->once())
                  ->method('run')
                  ->with($this->equalTo($this->queueManager))
                  ->will($this->returnValue(null));
 
-        $queueJobStatus = $this->getMock(QueueJobStatus::class);
+        $queueJobStatus = $this->getMock('ride\\library\\queue\\QueueJobStatus');
         $queueJobStatus->expects($this->once())
                        ->method('getQueueJob')
                        ->will($this->returnValue($queueJob));

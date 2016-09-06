@@ -17,13 +17,13 @@ class RoundRobinQueueDispatcherTest extends AbstractQueueDispatcherTest {
      * @dataProvider providerQueue
      */
     public function testQueue($queue, $queueStatus, $dateSchedule = null) {
-        $queueJob = $this->getMock(AbstractQueueJob::class);
+        $queueJob = $this->getMock('ride\\library\\queue\\job\\AbstractQueueJob');
         $queueJob->expects($this->once())
                  ->method('setQueue')
                  ->with($this->equalTo($queue))
                  ->will($this->returnValue(null));
 
-        $queueManager = $this->getMock(QueueManager::class);
+        $queueManager = $this->getMock('ride\\library\\queue\\QueueManager');
         $queueManager->expects($this->once())
                      ->method('getQueueStatus')
                      ->will($this->returnValue($queueStatus));
