@@ -1,10 +1,12 @@
 # Ride: Queue Library
 
-Queue library of the PHP Ride framework.
+Queue abstraction library of the PHP Ride framework.
 
-Abstraction library for an underlying queue system used for time-consuming tasks.
+Use a queue system for time-consuming tasks.
 
-## QueueJob
+## What's In This Library
+
+### QueueJob
 
 The _QueueJob_ interface is for you to implement.
 It holds the logic to run your task.
@@ -15,7 +17,7 @@ It will make your job smaller to store since id's are easier to serialize then o
 
 When your job is invoked, you should lookup your data, using the references, in the current state instead of the state when the job was queued.
 
-## QueueManager
+### QueueManager
 
 The _QueueManager_ interface is to be implemented for the underlying queue system.
 This is the facade to the queue system.
@@ -25,12 +27,12 @@ It's also used to queue jobs and to update their status.
 The _QueueJob_ interface receives the _QueueManager_ when it's invoked.
 The queue manager should be extended so it can be used by queue jobs to lookup their references.
 
-## QueueJobStatus
+### QueueJobStatus
 
 When you ask information about queue jobs, the _QueueManager_ will return _QueueJobStatus_ instances.
 This interface is also to be implemented by the underlying queue system.
 
-## QueueDispatcher
+### QueueDispatcher
 
 A _QueueJob_ holds the queue it is in.
 When you create a job, you might not know about the available queues or their availability.
@@ -39,17 +41,17 @@ This dispatcher's goal is to select the proper queue for the job and perform the
 
 There are 2 dispatchers provided by the library.
 
-### SingleQueueDispatcher
+#### SingleQueueDispatcher
 
 The _SingleQueueDispatcher_ is a very simple dispatcher.
 It's used when you have only one static queue.
 
-### RoundRobinQueueDispatcher
+#### RoundRobinQueueDispatcher
 
 The _RoundRobinQueueDispatcher_ is initialized with a number of queues.
 When this dispatcher queues a job, it will push it to the queue with the least amount of jobs pending.
 
-## QueueWorker
+### QueueWorker
 
 A _QueueWorker_ is used to grab jobs from the queue, and invoke them.
 This work process is most likely a command or daemon which runs in the background.
@@ -125,4 +127,25 @@ class MyQueueJob extends AbstractQueueJob {
     
 }
 
+```
+
+### Related Modules
+
+You can check the following related modules to this library:
+
+- [ride/app-queue-beanstalkd](https://github.com/all-ride/ride-app-queue-beanstalkd)
+- [ride/app-queue-orm](https://github.com/all-ride/ride-app-queue-orm)
+- [ride/cli-queue](https://github.com/all-ride/ride-cli-queue)
+- [ride/lib-common](https://github.com/all-ride/ride-lib-common)
+- [ride/lib-log](https://github.com/all-ride/ride-lib-log)
+- [ride/lib-queue-beanstalkd](https://github.com/all-ride/ride-lib-queue-beanstalkd)
+- [ride/wba-queue](https://github.com/all-ride/ride-wba-queue)
+- [ride/wra-queue](https://github.com/all-ride/ride-wra-queue)
+
+## Installation
+
+You can use [Composer](http://getcomposer.org) to install this library.
+
+```
+composer require ride/lib-queue
 ```
