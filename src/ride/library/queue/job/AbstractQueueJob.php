@@ -25,7 +25,14 @@ abstract class AbstractQueueJob implements QueueJob {
      * Priority level of this job
      * @var integer
      */
-    protected $priority;
+    protected $priority = 100;
+
+    /**
+     * Maximum number of schedules, true for infinite and false for no
+     * reschedules
+     * @var integer|boolean
+     */
+    protected $maxSchedules = true;
 
     /**
      * Constructs a new abstract job
@@ -92,6 +99,28 @@ abstract class AbstractQueueJob implements QueueJob {
      */
     public function getPriority() {
         return $this->priority;
+    }
+
+    /**
+     * Sets the maximum number of schedules
+     * @param integer|boolean $maxSchedules Number of schedules or a boolean for
+     * infinite or no reschedules
+     */
+    public function setMaxSchedules($maxSchedules) {
+        if (!is_bool($maxSchedules) && (!is_numeric($maxSchedules) || $maxSchedules < 0)) {
+            throw new QueueException('Could not set the maxSchedules: provided value should be a number greater or equals to 0, or a boolean');
+        }
+
+        $this->maxSchedules = $maxSchedules;
+    }
+
+    /**
+     * Gets the maximum number of schedules
+     * @return integer|boolean Number of schedules or a boolean for infinite or
+     * no reschedules
+     */
+    public function getMaxSchedules() {
+        return $this->maxSchedules;
     }
 
 }

@@ -77,11 +77,25 @@ class GenericQueueWorker implements QueueWorker {
                     }
 
                     if (is_numeric($dateReschedule)) {
-                        if ($this->log) {
-                            $this->log->logDebug('Rescheduling job #' . $queueJobId . ' for ' . date('Y-m-d H:i:s', $dateReschedule), null, self::LOG_NAME);
+                        $canReschedule = false;
+
+                        if ($queueJob->getMaxSchedules() === true || $queueJob->getMaxSchedules() > $queueJobStatus->getNumSchedules()) {
+                            $canReschedule = true;
                         }
 
-                        $queueManager->rescheduleJob($queueJob, $dateReschedule);
+                        if ($canReschedule) {
+                            if ($this->log) {
+                                $this->log->logDebug('Rescheduling job #' . $queueJobId . ' for ' . date('Y-m-d H:i:s', $dateReschedule), null, self::LOG_NAME);
+                            }
+
+                            $queueManager->rescheduleJob($queueJob, $dateReschedule);
+                        } else {
+                            if ($this->log) {
+                                $this->log->logError('Can\'t reschedule job #' . $queueJobId . ' for ' . date('Y-m-d H:i:s', $dateReschedule), 'Max schedules reached', self::LOG_NAME);
+                            }
+
+                            $queueManager->updateStatus($queueJob->getJobId(), 'Could not reschedule job: max schedules reached', QueueManager::STATUS_ERROR);
+                        }
                     } else {
                         $queueManager->finishJob($queueJob);
                     }
