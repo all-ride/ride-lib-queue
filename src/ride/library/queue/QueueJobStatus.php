@@ -44,6 +44,12 @@ interface QueueJobStatus {
     public function getDescription();
 
     /**
+     * Gets how many times this job has been scheduled
+     * @return integer
+     */
+    public function getNumSchedules();
+
+    /**
      * Gets the slot number
      * @return integer
      */

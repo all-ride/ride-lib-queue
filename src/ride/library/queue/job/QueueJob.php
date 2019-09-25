@@ -42,6 +42,13 @@ interface QueueJob {
     public function getPriority();
 
     /**
+     * Gets the maximum number of schedules
+     * @return integer|boolean Number of schedules or a boolean for infinite or
+     * no reschedules
+     */
+    public function getMaxSchedules();
+
+    /**
      * Invokes the implementation of the job
      * @param QueueManager $queueManager Instance of the queue manager
      * @return integer|null A timestamp from which time this job should be
