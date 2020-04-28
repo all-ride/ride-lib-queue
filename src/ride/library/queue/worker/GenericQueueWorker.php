@@ -48,15 +48,18 @@ class GenericQueueWorker implements QueueWorker {
      * queue manager
      * @param string $queue Name of the queue
      * @param float $sleepTime Time in seconds to sleep between jobs/ticks
+     * @param integer $maxJobs Maximum number of jobs to invoke
      * @return null
      */
-    public function work(QueueManager $queueManager, $queue, $sleepTime) {
+    public function work(QueueManager $queueManager, $queue, $sleepTime, $maxJobs = 0) {
         $timer = new Timer();
+        $numJobs = 0;
 
         do {
             $queueJobStatus = $queueManager->popJobFromQueue($queue);
             if ($queueJobStatus) {
                 $timer->reset();
+                $numJobs++;
 
                 $queueJob = $queueJobStatus->getQueueJob();
 
@@ -105,6 +108,10 @@ class GenericQueueWorker implements QueueWorker {
                     $time = $timer->getTime();
 
                     $this->log->logDebug('Job #' . $queueJobId . ' took ' . $time . ' seconds', null, self::LOG_NAME);
+                }
+
+                if ($maxJobs && $numJobs >= $maxJobs) {
+                    break;
                 }
 
                 continue;
