@@ -1,3 +1,7 @@
+# [1.3.0] - 2020-05-06
+## added
+- implemented setter for queue in single dispatcher
+
 # [1.2.0] - 2020-04-28
 ## added
 - implemented max jobs for a worker
