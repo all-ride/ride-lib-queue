@@ -2,6 +2,7 @@
 
 namespace ride\library\queue\dispatcher;
 
+use ride\library\queue\exception\QueueException;
 use ride\library\queue\job\QueueJob;
 
 /**
@@ -18,9 +19,20 @@ class SingleQueueDispatcher extends AbstractQueueDispatcher {
     /**
      * Constructs a new queue dispatcher
      * @param string $queue Name of the queue
-     * @return null
      */
     public function __construct($queue) {
+        $this->setQueue($queue);
+    }
+
+    /**
+     * Sets the queue for this dispatcher
+     * @param string $queue Name of the queue
+     */
+    public function setQueue($queue) {
+        if (!is_string($queue) || $queue === '') {
+            throw new QueueException('Could not set queue for dispatcher: empty or invalid string provided');
+        }
+
         $this->queue = $queue;
     }
 
